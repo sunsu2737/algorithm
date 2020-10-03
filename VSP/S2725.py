@@ -2,10 +2,10 @@ import sys
 line = sys.stdin.readline
 
 def gcd(a,b):
-    while a!=0 and b!=0:
-        a,b=max(a,b),min(a,b)
-        a=a%b
-    return max(a,b)
+    mod=b%a
+    if mod==0:
+        return a
+    return gcd(mod,a)
 
 
 def main():

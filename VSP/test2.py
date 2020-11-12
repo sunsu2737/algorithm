@@ -1,103 +1,49 @@
-class Time:
-    def __init__(self, h, m, s):
-        self.h = h
-        self.m = m
-        self.s = s
-
-    def __sub__(self, other):
-        sh, sm, ss = self.h, self.m, self.s
-        oh, om, os = other.h, other.m, other.s
-        s = ss-os
-        if s < 0:
-            s += 60
-            sm -= 1
-        m = sm-om
-        if m < 0:
-            m += 60
-            sh -= 1
-        h = sh-oh
-        return Time(h, m, s)
-
-    def __add__(self, other):
-        sh, sm, ss = self.h, self.m, self.s
-        oh, om, os = other.h, other.m, other.s
-        s = ss+os
-        if s > 59:
-            s -= 60
-            sm += 1
-        m = sm+om
-        if m > 59:
-            m -= 60
-            sh += 1
-        h = sh+oh
-        return Time(h, m, s)
-
-    def __le__(self, other):
-        if self.h < other.h:
+class K:
+    def __init__(self,number):
+        self.number=number
+        self.able=True
+        self.time=0
+        self.match=0
+    def use(self,time):
+        if self.able:
+            self.able=False
+            self.time=self.time
+            self.match+=1
             return True
-        elif self.h == other.h:
-            if self.m < other.m:
-                return True
-            elif self.m == other.m:
-                if self.s <= other.s:
-                    return True
-        return False
-
-    def __lt__(self, other):
-        if self.h < other.h:
+        else:
+            return False
+    def tictoc(self):
+        self.time-=1
+        if self.time<=0:
+            self.time=0
+        self.able=True
+    def __lt__(self,other):
+        if self.match<other.match:
             return True
-        elif self.h == other.h:
-            if self.m < other.m:
-                return True
-            elif self.m == other.m:
-                if self.s < other.s:
-                    return True
         return False
-
+    def __lte__(self,other):
+        if self.match<=other.match:
+            return True
+        return False
     def __str__(self):
-        return '{:0>2}:{:0>2}:{:0>2}'.format(self.h, self.m, self.s)
-
-
-def solution(play_time, adv_time, logs):
-    answer = ''
-    if play_time <= adv_time:
-        return '00:00:00'
-    adv_time = Time(int(adv_time[0:2]), int(
-        adv_time[3:5]), int(adv_time[6:8]))
-    real_log = []
-    play_time=Time(int(play_time[0:2]), int(
-        play_time[3:5]), int(play_time[6:8]))
-    for time in logs:
-        start, end = time.split('-')
-        start_time = Time(int(start[0:2]), int(start[3:5]), int(start[6:8]))
-        end_time = Time(int(end[0:2]), int(end[3:5]), int(end[6:8]))
-        real_log.append((start_time, end_time))
-    # for i, j in real_log:
-    #     print(i, j)
-    max_adv = Time(0, 0, 0)
-    real_log.sort()
-    for start, end in real_log:
-        stack_adv = Time(0, 0, 0)
-        # print(start)
-        adv_start = Time(start.h, start.m, start.s)
-        adv_end = adv_start+adv_time
-        for s, e in real_log:
-            if adv_start <= s <= adv_end:
-                if adv_end <= e:
-                    # print(adv_end, s, adv_end-s)
-                    stack_adv = stack_adv+(adv_end-s)
-                else:
-                    # print(adv_end, s, adv_end-s)
-                    stack_adv = stack_adv+(e-s)
-        print(stack_adv)
-        if max_adv < stack_adv:
-            if adv_end<=play_time:
-                max_adv = Time(stack_adv.h, stack_adv.m, stack_adv.s)
-                answer = '{:0>2}:{:0>2}:{:0>2}'.format(
-                    adv_start.h, adv_start.m, adv_start.s)
-
+        return str(self.match)
+def solution(n, customers):
+    answer = 0
+    ks=[]
+    for i in range(1,n):
+        ks.append(K(i))
+    idx=0
+    while idx<len(customers):
+        for k in ks:
+            if not k.use(int(customers[idx][:-2])):
+                break
+            else:
+                idx+=1
+        for k in ks:
+            k.tictoc()
+    ks.sort()
+    print(ks)
+    
     return answer
 
-
-print(solution("02:03:55", "00:14:15", [
-      "01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29", "01:37:44-02:02:30"]))
+solution(3,["10/01 23:20:25 30", "10/01 23:25:50 26", "10/01 23:31:00 05", "10/01 23:33:17 24", "10/01 23:50:25 13", "10/01 23:55:45 20", "10/01 23:59:39 03", "10/02 00:10:00 10"])

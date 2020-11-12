@@ -1,28 +1,30 @@
 #include <stdio.h>
-
-
-
-// dr+=(dr*0.08)-100000
-
-
-#define SIZE 5
-int main()
+int x[1000000];
+int main(void)
 {
-    int a[5];
+   int  tmp, i, j, N;
 
+   scanf("%d", &N);
 
-    for(int i=0;i<5;i++){
+   for (i = 0; i < N; i++)
+   {
+      scanf("%d", &x[i]);
+   }
+   for (i = 0; i < 2; i++)
+   {
+      for (j = 0; j < N-1; j++)
+      {
+         if (x[j] < x[j + 1])
+         {
+            tmp = x[j];
 
-        scanf("%d",&a[i]);
-    }
-    
+            x[j] = x[j + 1];
 
+            x[j + 1] = tmp;
+         }
+      }
+   }
+   printf("%d\n", x[N - 2]);
 
-
-    for(int i=0;i<5;i++){
-        
-        printf("%d\n",a[i]);
-        
-    }
-
+   return 0;
 }

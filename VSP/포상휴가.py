@@ -27,9 +27,6 @@
 import math
 
 
-
-
-
 def update_tree(index_tree, idx, val, start_index):
     cur_idx = start_index+idx
     index_tree[cur_idx] = (val, idx)

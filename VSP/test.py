@@ -1,11 +1,15 @@
-﻿dp = [0]*60001
+﻿def solution(n):
+    answer = 0
 
-dp[1] = 1
-dp[2] = 2
-a='123'
-a.
-for i in range(3, 60001):
-    dp[i] = dp[i-1]+dp[i-2]
+    n_tile = [0] * (n+1)
 
-print(len(str(dp[60000]//30000000//3600//24//365)))
-ㅁ
+    n_tile[1] = 1
+    n_tile[2] = 2
+
+    for i in range(3, n+1):
+        n_tile[i] = n_tile[i-1] + n_tile[i-2]
+
+    return n_tile[n]
+
+
+print(solution(11))

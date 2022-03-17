@@ -1,4 +1,4 @@
-﻿def solution(n):
+﻿﻿def solution(n):
     answer = 0
 
     n_tile = [0] * (n+1)

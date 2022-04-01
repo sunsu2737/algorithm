@@ -1,28 +1,28 @@
-
+import bisect
 def solution(tests):
     answer = []
     tests = list(map(list, zip(*tests)))
 
     for test in tests:
         test.sort()
-        pre = sum(test)
-        ans = -1
-        start = test[0]
-        end = test[-1]+test[-1]-test[0]
-        while start <= end:
-            mid = (start + end)//2
-            temp = 0
-            for t2 in test:
-                temp += abs(mid-t2)
-            print(start, end, temp, mid, ans)
-            if pre >= temp:
-                end = mid-1
-                ans = mid
-                pre = temp
-
+        pre_i = 1
+        pre = 999999999999
+        t_sum = [0]
+        for i in range(len(test)):
+            t_sum.append(t_sum[-1]+test[i])
+        # print(test)
+        # print(t_sq)
+        for i in range(1, 1001):
+            point = bisect.bisect_left(test,i)
+            temp =  (i*point) - t_sum[point] + t_sum[-1] - t_sum[point] - (len(test)-point)*i
+            # print(i,temp)
+            if pre <= temp:
+                answer.append(pre_i)
+                break
             else:
-                start = mid+1
-        answer.append(ans)
+                pre = temp
+                pre_i = i
+
     return answer
 
 
